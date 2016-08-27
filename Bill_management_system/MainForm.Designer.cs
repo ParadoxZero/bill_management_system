@@ -32,16 +32,24 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.select_bill_item = new System.Windows.Forms.Button();
+            this.qty = new System.Windows.Forms.TextBox();
+            this.bill_item_list = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.exit = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.data_items = new System.Windows.Forms.DataGridView();
+            this.item_box = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.select = new System.Windows.Forms.Button();
+            this.Item_name = new System.Windows.Forms.TextBox();
+            this.item_price = new System.Windows.Forms.TextBox();
+            this.update_db = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.tab_view.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.data_items)).BeginInit();
             this.SuspendLayout();
@@ -66,9 +74,9 @@
             this.tabPage1.Controls.Add(this.data_items);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Controls.Add(this.textBox1);
-            this.tabPage1.Controls.Add(this.comboBox1);
+            this.tabPage1.Controls.Add(this.select_bill_item);
+            this.tabPage1.Controls.Add(this.qty);
+            this.tabPage1.Controls.Add(this.bill_item_list);
             this.tabPage1.Location = new System.Drawing.Point(4, 39);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -96,36 +104,43 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Item";
             // 
-            // button1
+            // select_bill_item
             // 
-            this.button1.AutoSize = true;
-            this.button1.Location = new System.Drawing.Point(482, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 27);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Add";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.select_bill_item.AutoSize = true;
+            this.select_bill_item.Location = new System.Drawing.Point(482, 5);
+            this.select_bill_item.Name = "select_bill_item";
+            this.select_bill_item.Size = new System.Drawing.Size(75, 27);
+            this.select_bill_item.TabIndex = 2;
+            this.select_bill_item.Text = "Add";
+            this.select_bill_item.UseVisualStyleBackColor = true;
+            this.select_bill_item.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // textBox1
+            // qty
             // 
-            this.textBox1.Location = new System.Drawing.Point(376, 6);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 22);
-            this.textBox1.TabIndex = 1;
+            this.qty.Location = new System.Drawing.Point(376, 6);
+            this.qty.Name = "qty";
+            this.qty.Size = new System.Drawing.Size(100, 22);
+            this.qty.TabIndex = 1;
             // 
-            // comboBox1
+            // bill_item_list
             // 
-            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(49, 5);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(284, 24);
-            this.comboBox1.TabIndex = 0;
+            this.bill_item_list.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.bill_item_list.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.bill_item_list.FormattingEnabled = true;
+            this.bill_item_list.Location = new System.Drawing.Point(49, 5);
+            this.bill_item_list.Name = "bill_item_list";
+            this.bill_item_list.Size = new System.Drawing.Size(284, 24);
+            this.bill_item_list.TabIndex = 0;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button1);
+            this.tabPage2.Controls.Add(this.update_db);
+            this.tabPage2.Controls.Add(this.item_price);
+            this.tabPage2.Controls.Add(this.Item_name);
+            this.tabPage2.Controls.Add(this.select);
+            this.tabPage2.Controls.Add(this.label4);
+            this.tabPage2.Controls.Add(this.item_box);
             this.tabPage2.Location = new System.Drawing.Point(4, 39);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -180,11 +195,74 @@
             this.data_items.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.data_items.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.data_items.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.data_items.Location = new System.Drawing.Point(7, 29);
+            this.data_items.Location = new System.Drawing.Point(7, 35);
             this.data_items.Name = "data_items";
             this.data_items.RowTemplate.Height = 24;
-            this.data_items.Size = new System.Drawing.Size(729, 379);
+            this.data_items.Size = new System.Drawing.Size(729, 373);
             this.data_items.TabIndex = 5;
+            // 
+            // item_box
+            // 
+            this.item_box.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.item_box.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.item_box.FormattingEnabled = true;
+            this.item_box.Location = new System.Drawing.Point(94, 4);
+            this.item_box.Name = "item_box";
+            this.item_box.Size = new System.Drawing.Size(249, 24);
+            this.item_box.TabIndex = 0;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(11, 7);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(77, 17);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Select Item";
+            // 
+            // select
+            // 
+            this.select.Location = new System.Drawing.Point(350, 7);
+            this.select.Name = "select";
+            this.select.Size = new System.Drawing.Size(75, 23);
+            this.select.TabIndex = 2;
+            this.select.Text = "Select";
+            this.select.UseVisualStyleBackColor = true;
+            this.select.Click += new System.EventHandler(this.select_Click);
+            // 
+            // Item_name
+            // 
+            this.Item_name.Location = new System.Drawing.Point(94, 49);
+            this.Item_name.Name = "Item_name";
+            this.Item_name.Size = new System.Drawing.Size(331, 22);
+            this.Item_name.TabIndex = 3;
+            // 
+            // item_price
+            // 
+            this.item_price.Location = new System.Drawing.Point(432, 48);
+            this.item_price.Name = "item_price";
+            this.item_price.Size = new System.Drawing.Size(100, 22);
+            this.item_price.TabIndex = 4;
+            // 
+            // update_db
+            // 
+            this.update_db.Location = new System.Drawing.Point(94, 89);
+            this.update_db.Name = "update_db";
+            this.update_db.Size = new System.Drawing.Size(113, 23);
+            this.update_db.TabIndex = 5;
+            this.update_db.Text = "Add/Update";
+            this.update_db.UseVisualStyleBackColor = true;
+            this.update_db.Click += new System.EventHandler(this.update_db_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(237, 88);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(106, 24);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Delete Entry";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_2);
             // 
             // MainForm
             // 
@@ -200,6 +278,8 @@
             this.tab_view.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.data_items)).EndInit();
@@ -214,12 +294,19 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button exit;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button select_bill_item;
+        private System.Windows.Forms.TextBox qty;
+        private System.Windows.Forms.ComboBox bill_item_list;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView data_items;
+        private System.Windows.Forms.Button update_db;
+        private System.Windows.Forms.TextBox item_price;
+        private System.Windows.Forms.TextBox Item_name;
+        private System.Windows.Forms.Button select;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox item_box;
+        private System.Windows.Forms.Button button1;
     }
 }

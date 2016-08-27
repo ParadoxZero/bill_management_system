@@ -31,7 +31,7 @@ namespace Bill_management_system
             }
             catch (MySqlException)
             {
-                MessageBox.Show("Unable to connect to database!");
+                MessageBox.Show("Unable to connect to database!","Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
                 System.Environment.Exit(1);
             }
             MySqlCommand cmd = cn.CreateCommand();
@@ -39,7 +39,6 @@ namespace Bill_management_system
             MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
             DataSet set = new DataSet();
             adp.Fill(set);
-            adp.Dispose();
             var main_form = new MainForm();
             main_form.db_connection = cn;
             main_form.item_data = set;

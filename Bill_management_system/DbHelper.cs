@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+using System.Data;
+
+namespace Bill_management_system
+{
+    class DbHelper
+    {
+        public MySqlConnection connection;
+        DbHelper(MySqlConnection c)
+        {
+            connection = c;
+        }
+
+        public DataSet getItem(int id)
+        {
+            return null;
+        }
+
+    }
+}

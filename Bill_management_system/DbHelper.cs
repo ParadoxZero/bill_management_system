@@ -21,9 +21,10 @@ namespace Bill_management_system
             cmd = connection.CreateCommand();
         }
 
-        public int insertItem(String name, Decimal price)
+        public int insertItem(String name, Decimal price, int stock)
         {
-            cmd.CommandText = "INSERT INTO item(Name,Price) VALUES(" + qte + name + qte + com + price + ");";
+            cmd.CommandText = "INSERT INTO item(Name,Price,Stock) VALUES(" + qte + name + qte + com + price + 
+                com + stock + ");";
             try
             {
                 return cmd.ExecuteNonQuery();
@@ -52,6 +53,11 @@ namespace Bill_management_system
             cmd.CommandText = "DELETE FROM item where id=" + id;
             cmd.ExecuteNonQuery();
             return;
+        }
+        public void updateItemStock(string id, int val)
+        {
+            cmd.CommandText = "Update item SET Stock=" + val + " Where id=" + id + ";" ;
+            cmd.ExecuteNonQuery();
         }
         public DataSet getAllItem()
         {

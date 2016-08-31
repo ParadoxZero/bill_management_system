@@ -17,6 +17,7 @@ namespace Bill_management_system
         public MySqlConnection db_connection;
         public DataSet item_list_data;
 
+        private Printer printer;
         private int sno = 1;
         private bool updateFlag = false;
         private DataTable dt = new DataTable();
@@ -30,17 +31,36 @@ namespace Bill_management_system
             dt.Columns.Add("Name", typeof(string));
             dt.Columns.Add("Qty", typeof(int));
             dt.Columns.Add("Price", typeof(decimal));
+            dt.Columns.Add("GrossPrice", typeof(Decimal));
             dt.Columns.Add("Tax", typeof(decimal));
             dt.Columns.Add("Sub Total", typeof(Decimal));
             dt.Columns.Add("Stock", typeof(int));
             data_items.DataSource = dt;
-            data_items.Columns["Sno"].ReadOnly = true;
-            data_items.Columns["Name"].ReadOnly = true;
-            data_items.Columns["Price"].ReadOnly = true;
-            data_items.Columns["Sub Total"].ReadOnly = true;
+            initializeDataItems();
             data_items.AllowUserToAddRows = false;
             data_items.CellValueChanged += (data_changed);
             dt.RowDeleted += (sno_updater);
+            string header = ConfigurationManager.AppSettings["header"];
+            string footer = ConfigurationManager.AppSettings["footer"];
+            string output = ConfigurationManager.AppSettings["output"];
+            printer = new Printer(header,footer,output);
+        }
+        public void initializeDataItems()
+        {
+            data_items.Columns["Sno"].ReadOnly = true;
+            data_items.Columns["Sno"].FillWeight = 20;
+            data_items.Columns["Name"].ReadOnly = true;
+            data_items.Columns["Name"].FillWeight = 200;
+            data_items.Columns["Price"].ReadOnly = true;
+            data_items.Columns["Price"].FillWeight = 30;
+            data_items.Columns["Sub Total"].ReadOnly = true;
+            data_items.Columns["Sub Total"].FillWeight = 30;
+            data_items.Columns["GrossPrice"].ReadOnly = true;
+            data_items.Columns["GrossPrice"].FillWeight = 30;
+            data_items.Columns["Stock"].ReadOnly = true;
+            data_items.Columns["Stock"].FillWeight = 30;
+            data_items.Columns["Tax"].FillWeight = 30;
+            data_items.Columns["Qty"].FillWeight = 30;
         }
         public void initialize()
         {
@@ -66,7 +86,14 @@ namespace Bill_management_system
             DataRow r = dt.Rows[row];
             Decimal price = Convert.ToDecimal(r["Price"]);
             Decimal tax = Convert.ToDecimal(r["Tax"]);
-            int qty;
+            int qty, stock=0;
+            foreach(DataRow rw in item_list_data.Tables[0].Rows)
+            {
+                if (rw["Name"] == r["Name"])
+                {
+                    stock = Convert.ToInt32(rw["Stock"]);
+                }
+            }
             try {
                 qty = Convert.ToInt32(r["Qty"]);
             }
@@ -75,6 +102,14 @@ namespace Bill_management_system
                 r["Qty"] = 1;
                 qty = 1;
             }
+            stock -= qty;
+            if (stock < 0)
+            {
+                MessageBox.Show("Not Enough stock!");
+                return;
+            }
+            r["Stock"] = "" + stock;
+            r["GrossPrice"] = price * qty;
             r["Sub Total"] = price * qty * (1 + tax/100);
         }
         private void sno_updater(object s, EventArgs e)
@@ -114,6 +149,7 @@ namespace Bill_management_system
                     r["Price"] = price;
                     r["Tax"] = tax;
                     r["Stock"] = row["Stock"];
+                    r["GrossPrice"] = price * qty;
                     r["Sub Total"] = price*qty*(1+ (Decimal)0.145);
                     int st = Convert.ToInt32(row["Stock"]) - qty;
                     if (st < 0)
@@ -141,7 +177,7 @@ namespace Bill_management_system
             // this is here to make sure Sno increases only if item new
             dt.Rows.Add(r);
             bill_items_combo.Text = "";
-            this.qty_textbox.Text = "";
+            this.qty_textbox.Text = "1";
         }
 
         private void select_Click(object sender, EventArgs e)
@@ -184,7 +220,13 @@ namespace Bill_management_system
                 updateFlag = false;
             }
             else {
-                db.insertItem(item_name_textbox.Text, price, stock);
+                try {
+                    db.insertItem(item_name_textbox.Text, price, stock);
+                }
+                catch(MySqlException err)
+                {
+                    MessageBox.Show("Error adding new item :" + err.Message);
+                }
             }
             item_list_data = db.getAllItem();
             initialize();
@@ -231,9 +273,8 @@ namespace Bill_management_system
         {
             foreach(DataRow row in dt.Rows)
             {
-                int stock = Convert.ToInt32(row["Stock"]);
+                int stock = Convert.ToInt32(row["Stock"]); ;
                 int qty = Convert.ToInt32(row["Qty"]);
-                stock -= qty;
                 if (stock < 0)
                 {
                     MessageBox.Show("Not Enough Stock of " + row["Name"]);
@@ -241,9 +282,14 @@ namespace Bill_management_system
                 }
                 string id = getId((string)row["Name"]);
                 db.updateItemStock(id, stock);
-                item_list_data = db.getAllItem();
-                initialize();
             }
+            printer.header(tin, cust_tin_textbox.Text, date_picker.Text);
+            printer.content(dt);
+            printer.footer(10.10);
+            printer.print();
+            dt.Clear();
+            item_list_data = db.getAllItem();
+            initialize();
         }
 
         private string getId(string name)
@@ -259,9 +305,12 @@ namespace Bill_management_system
         private void save_config_btn_Click(object sender, EventArgs e)
         {
             string tin = default_tin_textbox.Text;
-            ConfigurationManager.AppSettings["tin"] = tin;
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             string tax = default_tax_textbox.Text;
-            ConfigurationManager.AppSettings["tax"] = tax;
+            config.AppSettings.Settings["tax"].Value = tax;
+            config.AppSettings.Settings["tin"].Value = tin;
+            config.Save();
+            ConfigurationManager.RefreshSection("appSettings");
             initialize();
         }
     }

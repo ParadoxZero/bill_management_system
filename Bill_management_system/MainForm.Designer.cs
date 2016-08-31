@@ -43,13 +43,15 @@
             this.qty_textbox = new System.Windows.Forms.TextBox();
             this.bill_items_combo = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
-            this.update_db = new System.Windows.Forms.Button();
-            this.item_price_textbox = new System.Windows.Forms.TextBox();
-            this.item_name_textbox = new System.Windows.Forms.TextBox();
-            this.select = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.item_box_combo = new System.Windows.Forms.ComboBox();
+            this.stock_textbox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.select = new System.Windows.Forms.Button();
+            this.update_db = new System.Windows.Forms.Button();
+            this.item_name_textbox = new System.Windows.Forms.TextBox();
+            this.item_price_textbox = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.default_tin_textbox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -61,15 +63,13 @@
             this.exit = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
-            this.stock_textbox = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.tab_view.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.data_items)).BeginInit();
             this.tabPage2.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab_view
@@ -209,6 +209,7 @@
             this.qty_textbox.Name = "qty_textbox";
             this.qty_textbox.Size = new System.Drawing.Size(100, 22);
             this.qty_textbox.TabIndex = 1;
+            this.qty_textbox.Text = "1";
             // 
             // bill_items_combo
             // 
@@ -231,6 +232,51 @@
             this.tabPage2.Text = "Edit Database";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // panel2
+            // 
+            this.panel2.AutoSize = true;
+            this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.item_box_combo);
+            this.panel2.Controls.Add(this.stock_textbox);
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.select);
+            this.panel2.Controls.Add(this.update_db);
+            this.panel2.Controls.Add(this.item_name_textbox);
+            this.panel2.Controls.Add(this.item_price_textbox);
+            this.panel2.Location = new System.Drawing.Point(20, 25);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(707, 239);
+            this.panel2.TabIndex = 8;
+            // 
+            // item_box_combo
+            // 
+            this.item_box_combo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.item_box_combo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.item_box_combo.FormattingEnabled = true;
+            this.item_box_combo.Location = new System.Drawing.Point(132, 64);
+            this.item_box_combo.Name = "item_box_combo";
+            this.item_box_combo.Size = new System.Drawing.Size(249, 24);
+            this.item_box_combo.TabIndex = 0;
+            // 
+            // stock_textbox
+            // 
+            this.stock_textbox.Location = new System.Drawing.Point(577, 108);
+            this.stock_textbox.Name = "stock_textbox";
+            this.stock_textbox.Size = new System.Drawing.Size(100, 22);
+            this.stock_textbox.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(49, 67);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(77, 17);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Select Item";
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(275, 148);
@@ -240,30 +286,6 @@
             this.button1.Text = "Delete Entry";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.delete_btn_click);
-            // 
-            // update_db
-            // 
-            this.update_db.Location = new System.Drawing.Point(132, 149);
-            this.update_db.Name = "update_db";
-            this.update_db.Size = new System.Drawing.Size(113, 23);
-            this.update_db.TabIndex = 5;
-            this.update_db.Text = "Add/Update";
-            this.update_db.UseVisualStyleBackColor = true;
-            this.update_db.Click += new System.EventHandler(this.update_db_Click);
-            // 
-            // item_price_textbox
-            // 
-            this.item_price_textbox.Location = new System.Drawing.Point(470, 108);
-            this.item_price_textbox.Name = "item_price_textbox";
-            this.item_price_textbox.Size = new System.Drawing.Size(100, 22);
-            this.item_price_textbox.TabIndex = 4;
-            // 
-            // item_name_textbox
-            // 
-            this.item_name_textbox.Location = new System.Drawing.Point(132, 109);
-            this.item_name_textbox.Name = "item_name_textbox";
-            this.item_name_textbox.Size = new System.Drawing.Size(331, 22);
-            this.item_name_textbox.TabIndex = 3;
             // 
             // select
             // 
@@ -275,24 +297,29 @@
             this.select.UseVisualStyleBackColor = true;
             this.select.Click += new System.EventHandler(this.select_Click);
             // 
-            // label4
+            // update_db
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(49, 67);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 17);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Select Item";
+            this.update_db.Location = new System.Drawing.Point(132, 149);
+            this.update_db.Name = "update_db";
+            this.update_db.Size = new System.Drawing.Size(113, 23);
+            this.update_db.TabIndex = 5;
+            this.update_db.Text = "Add/Update";
+            this.update_db.UseVisualStyleBackColor = true;
+            this.update_db.Click += new System.EventHandler(this.update_db_Click);
             // 
-            // item_box_combo
+            // item_name_textbox
             // 
-            this.item_box_combo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.item_box_combo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.item_box_combo.FormattingEnabled = true;
-            this.item_box_combo.Location = new System.Drawing.Point(132, 64);
-            this.item_box_combo.Name = "item_box_combo";
-            this.item_box_combo.Size = new System.Drawing.Size(249, 24);
-            this.item_box_combo.TabIndex = 0;
+            this.item_name_textbox.Location = new System.Drawing.Point(132, 109);
+            this.item_name_textbox.Name = "item_name_textbox";
+            this.item_name_textbox.Size = new System.Drawing.Size(331, 22);
+            this.item_name_textbox.TabIndex = 3;
+            // 
+            // item_price_textbox
+            // 
+            this.item_price_textbox.Location = new System.Drawing.Point(470, 108);
+            this.item_price_textbox.Name = "item_price_textbox";
+            this.item_price_textbox.Size = new System.Drawing.Size(100, 22);
+            this.item_price_textbox.TabIndex = 4;
             // 
             // tabPage3
             // 
@@ -408,32 +435,6 @@
             this.label3.Text = "Mariya Agencies";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // stock_textbox
-            // 
-            this.stock_textbox.Location = new System.Drawing.Point(577, 108);
-            this.stock_textbox.Name = "stock_textbox";
-            this.stock_textbox.Size = new System.Drawing.Size(100, 22);
-            this.stock_textbox.TabIndex = 7;
-            // 
-            // panel2
-            // 
-            this.panel2.AutoSize = true;
-            this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.item_box_combo);
-            this.panel2.Controls.Add(this.stock_textbox);
-            this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.select);
-            this.panel2.Controls.Add(this.update_db);
-            this.panel2.Controls.Add(this.item_name_textbox);
-            this.panel2.Controls.Add(this.item_price_textbox);
-            this.panel2.Location = new System.Drawing.Point(20, 25);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(707, 239);
-            this.panel2.TabIndex = 8;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -451,12 +452,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.data_items)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }

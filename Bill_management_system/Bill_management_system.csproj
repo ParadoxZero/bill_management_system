@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbHelper.cs" />
+    <Compile Include="format.cs" />
     <Compile Include="Form_Splash.cs">
       <SubType>Form</SubType>
     </Compile>

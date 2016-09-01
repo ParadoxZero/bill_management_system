@@ -44,6 +44,10 @@
             this.bill_items_combo = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.db_change_history_label = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.item_box_combo = new System.Windows.Forms.ComboBox();
             this.stock_textbox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -53,22 +57,31 @@
             this.item_name_textbox = new System.Windows.Forms.TextBox();
             this.item_price_textbox = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.path_display_label = new System.Windows.Forms.Label();
+            this.local_settings_save_btn = new System.Windows.Forms.Button();
+            this.select_folder_btn = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.default_tax_textbox = new System.Windows.Forms.TextBox();
             this.default_tin_textbox = new System.Windows.Forms.TextBox();
+            this.db_backup_btn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.save_config_btn = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.default_tax_textbox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.exit = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.bill_save_folder_browser = new System.Windows.Forms.FolderBrowserDialog();
+            this.backup_folder_browser = new System.Windows.Forms.FolderBrowserDialog();
             this.tab_view.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.data_items)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -238,6 +251,10 @@
             this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.db_change_history_label);
+            this.panel2.Controls.Add(this.label11);
+            this.panel2.Controls.Add(this.label10);
+            this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.item_box_combo);
             this.panel2.Controls.Add(this.stock_textbox);
             this.panel2.Controls.Add(this.label4);
@@ -248,8 +265,43 @@
             this.panel2.Controls.Add(this.item_price_textbox);
             this.panel2.Location = new System.Drawing.Point(20, 25);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(707, 239);
+            this.panel2.Size = new System.Drawing.Size(1039, 318);
             this.panel2.TabIndex = 8;
+            // 
+            // db_change_history_label
+            // 
+            this.db_change_history_label.AutoSize = true;
+            this.db_change_history_label.Location = new System.Drawing.Point(132, 148);
+            this.db_change_history_label.Name = "db_change_history_label";
+            this.db_change_history_label.Size = new System.Drawing.Size(0, 17);
+            this.db_change_history_label.TabIndex = 11;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(621, 111);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(43, 17);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "Stock";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(468, 112);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(40, 17);
+            this.label10.TabIndex = 9;
+            this.label10.Text = "Price";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(52, 112);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(45, 17);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "Name";
             // 
             // item_box_combo
             // 
@@ -263,7 +315,7 @@
             // 
             // stock_textbox
             // 
-            this.stock_textbox.Location = new System.Drawing.Point(577, 108);
+            this.stock_textbox.Location = new System.Drawing.Point(670, 109);
             this.stock_textbox.Name = "stock_textbox";
             this.stock_textbox.Size = new System.Drawing.Size(100, 22);
             this.stock_textbox.TabIndex = 7;
@@ -279,9 +331,10 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(275, 148);
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(266, 209);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(106, 24);
+            this.button1.Size = new System.Drawing.Size(115, 61);
             this.button1.TabIndex = 6;
             this.button1.Text = "Delete Entry";
             this.button1.UseVisualStyleBackColor = true;
@@ -289,9 +342,10 @@
             // 
             // select
             // 
-            this.select.Location = new System.Drawing.Point(388, 67);
+            this.select.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.select.Location = new System.Drawing.Point(388, 54);
             this.select.Name = "select";
-            this.select.Size = new System.Drawing.Size(75, 23);
+            this.select.Size = new System.Drawing.Size(75, 36);
             this.select.TabIndex = 2;
             this.select.Text = "Select";
             this.select.UseVisualStyleBackColor = true;
@@ -299,9 +353,10 @@
             // 
             // update_db
             // 
-            this.update_db.Location = new System.Drawing.Point(132, 149);
+            this.update_db.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.update_db.Location = new System.Drawing.Point(134, 210);
             this.update_db.Name = "update_db";
-            this.update_db.Size = new System.Drawing.Size(113, 23);
+            this.update_db.Size = new System.Drawing.Size(126, 60);
             this.update_db.TabIndex = 5;
             this.update_db.Text = "Add/Update";
             this.update_db.UseVisualStyleBackColor = true;
@@ -316,20 +371,15 @@
             // 
             // item_price_textbox
             // 
-            this.item_price_textbox.Location = new System.Drawing.Point(470, 108);
+            this.item_price_textbox.Location = new System.Drawing.Point(514, 109);
             this.item_price_textbox.Name = "item_price_textbox";
             this.item_price_textbox.Size = new System.Drawing.Size(100, 22);
             this.item_price_textbox.TabIndex = 4;
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.default_tin_textbox);
-            this.tabPage3.Controls.Add(this.label6);
-            this.tabPage3.Controls.Add(this.save_config_btn);
-            this.tabPage3.Controls.Add(this.button3);
-            this.tabPage3.Controls.Add(this.button2);
-            this.tabPage3.Controls.Add(this.default_tax_textbox);
-            this.tabPage3.Controls.Add(this.label5);
+            this.tabPage3.Controls.Add(this.groupBox2);
+            this.tabPage3.Controls.Add(this.groupBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 39);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(1480, 460);
@@ -337,17 +387,108 @@
             this.tabPage3.Text = "Settings";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.path_display_label);
+            this.groupBox2.Controls.Add(this.local_settings_save_btn);
+            this.groupBox2.Controls.Add(this.select_folder_btn);
+            this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Location = new System.Drawing.Point(450, 18);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(349, 286);
+            this.groupBox2.TabIndex = 10;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Local Settings";
+            // 
+            // path_display_label
+            // 
+            this.path_display_label.AutoSize = true;
+            this.path_display_label.Location = new System.Drawing.Point(27, 86);
+            this.path_display_label.Name = "path_display_label";
+            this.path_display_label.Size = new System.Drawing.Size(0, 17);
+            this.path_display_label.TabIndex = 10;
+            // 
+            // local_settings_save_btn
+            // 
+            this.local_settings_save_btn.Location = new System.Drawing.Point(50, 164);
+            this.local_settings_save_btn.Name = "local_settings_save_btn";
+            this.local_settings_save_btn.Size = new System.Drawing.Size(100, 43);
+            this.local_settings_save_btn.TabIndex = 9;
+            this.local_settings_save_btn.Text = "Save";
+            this.local_settings_save_btn.UseVisualStyleBackColor = true;
+            this.local_settings_save_btn.Click += new System.EventHandler(this.local_settings_save_btn_Click);
+            // 
+            // select_folder_btn
+            // 
+            this.select_folder_btn.Location = new System.Drawing.Point(212, 31);
+            this.select_folder_btn.Name = "select_folder_btn";
+            this.select_folder_btn.Size = new System.Drawing.Size(91, 45);
+            this.select_folder_btn.TabIndex = 7;
+            this.select_folder_btn.Text = "Browse";
+            this.select_folder_btn.UseVisualStyleBackColor = true;
+            this.select_folder_btn.Click += new System.EventHandler(this.select_folder_btn_Click);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(24, 45);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(156, 17);
+            this.label12.TabIndex = 8;
+            this.label12.Text = "Select Bill save location";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.default_tax_textbox);
+            this.groupBox1.Controls.Add(this.default_tin_textbox);
+            this.groupBox1.Controls.Add(this.db_backup_btn);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.save_config_btn);
+            this.groupBox1.Location = new System.Drawing.Point(11, 18);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(433, 286);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Database settings";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(55, 37);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(80, 17);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Default Tax";
+            // 
+            // default_tax_textbox
+            // 
+            this.default_tax_textbox.Location = new System.Drawing.Point(142, 31);
+            this.default_tax_textbox.Name = "default_tax_textbox";
+            this.default_tax_textbox.Size = new System.Drawing.Size(168, 22);
+            this.default_tax_textbox.TabIndex = 1;
+            // 
             // default_tin_textbox
             // 
-            this.default_tin_textbox.Location = new System.Drawing.Point(98, 60);
+            this.default_tin_textbox.Location = new System.Drawing.Point(142, 81);
             this.default_tin_textbox.Name = "default_tin_textbox";
             this.default_tin_textbox.Size = new System.Drawing.Size(168, 22);
             this.default_tin_textbox.TabIndex = 6;
             // 
+            // db_backup_btn
+            // 
+            this.db_backup_btn.Location = new System.Drawing.Point(53, 213);
+            this.db_backup_btn.Name = "db_backup_btn";
+            this.db_backup_btn.Size = new System.Drawing.Size(145, 43);
+            this.db_backup_btn.TabIndex = 2;
+            this.db_backup_btn.Text = "Back up databaase";
+            this.db_backup_btn.UseVisualStyleBackColor = true;
+            this.db_backup_btn.Click += new System.EventHandler(this.db_backup_btn_Click);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(14, 65);
+            this.label6.Location = new System.Drawing.Point(58, 86);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(64, 17);
             this.label6.TabIndex = 5;
@@ -355,47 +496,13 @@
             // 
             // save_config_btn
             // 
-            this.save_config_btn.Location = new System.Drawing.Point(14, 150);
+            this.save_config_btn.Location = new System.Drawing.Point(53, 164);
             this.save_config_btn.Name = "save_config_btn";
             this.save_config_btn.Size = new System.Drawing.Size(75, 43);
             this.save_config_btn.TabIndex = 4;
             this.save_config_btn.Text = "Save";
             this.save_config_btn.UseVisualStyleBackColor = true;
             this.save_config_btn.Click += new System.EventHandler(this.save_config_btn_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(193, 199);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(152, 43);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Restore database";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(14, 199);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(145, 43);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Back up databaase";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // default_tax_textbox
-            // 
-            this.default_tax_textbox.Location = new System.Drawing.Point(98, 10);
-            this.default_tax_textbox.Name = "default_tax_textbox";
-            this.default_tax_textbox.Size = new System.Drawing.Size(168, 22);
-            this.default_tax_textbox.TabIndex = 1;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(11, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(80, 17);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Default Tax";
             // 
             // exit
             // 
@@ -455,7 +562,10 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -487,8 +597,7 @@
         private System.Windows.Forms.TextBox default_tin_textbox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button save_config_btn;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button db_backup_btn;
         private System.Windows.Forms.TextBox default_tax_textbox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button print_btn;
@@ -499,5 +608,17 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox stock_textbox;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button select_folder_btn;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.FolderBrowserDialog bill_save_folder_browser;
+        private System.Windows.Forms.Button local_settings_save_btn;
+        private System.Windows.Forms.Label path_display_label;
+        private System.Windows.Forms.Label db_change_history_label;
+        private System.Windows.Forms.FolderBrowserDialog backup_folder_browser;
     }
 }

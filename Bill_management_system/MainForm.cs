@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Bill_management_system
 {
@@ -43,7 +45,7 @@ namespace Bill_management_system
             string header = ConfigurationManager.AppSettings["header"];
             string footer = ConfigurationManager.AppSettings["footer"];
             string output = ConfigurationManager.AppSettings["output"];
-            printer = new Printer(header,footer,output);
+            printer = new Printer(output);
         }
         public void initializeDataItems()
         {
@@ -72,6 +74,8 @@ namespace Bill_management_system
             tin = ConfigurationManager.AppSettings["tin"];
             default_tax_textbox.Text = "" + tax;
             default_tin_textbox.Text = tin;
+            invoice_textbox.Text = ("" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.Hour.ToString("00") + DateTime.Now.Minute.ToString("00") + DateTime.Now.Second.ToString("00"));
+            sno = 1;
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -105,7 +109,7 @@ namespace Bill_management_system
             stock -= qty;
             if (stock < 0)
             {
-                MessageBox.Show("Not Enough stock!");
+                MessageBox.Show("Not Enough stock!", "Out of Stock", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             r["Stock"] = "" + stock;
@@ -154,7 +158,7 @@ namespace Bill_management_system
                     int st = Convert.ToInt32(row["Stock"]) - qty;
                     if (st < 0)
                     {
-                        MessageBox.Show("Not Enough stock!");
+                        MessageBox.Show("Not Enough stock!", "Out of Stock", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     r["Stock"] = "" + st;
@@ -169,6 +173,8 @@ namespace Bill_management_system
                     qt += Convert.ToInt32(r["Qty"]);
                     row["Stock"] = r["Stock"];
                     row["Qty"] = qt;
+                    row["GrossPrice"] = Convert.ToDecimal(row["GrossPrice"]) + Convert.ToDecimal(r["GrossPrice"]);
+                    row["Sub Total"] = Convert.ToDecimal(row["Sub Total"]) + Convert.ToDecimal(r["Sub Total"]);
                     return;
                 }
             }
@@ -199,7 +205,7 @@ namespace Bill_management_system
         {
             if(item_name_textbox.Text=="" || item_price_textbox.Text == "" || stock_textbox.Text=="")
             {
-                MessageBox.Show("Input values!");
+                MessageBox.Show("Input values!","Update Database",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return;
             }
             Decimal price = Convert.ToDecimal(item_price_textbox.Text);
@@ -225,9 +231,10 @@ namespace Bill_management_system
                 }
                 catch(MySqlException err)
                 {
-                    MessageBox.Show("Error adding new item :" + err.Message);
+                    MessageBox.Show("Error adding new item :" + err.Message,"Fatal Error",MessageBoxButtons.OK,MessageBoxIcon.Stop);
                 }
             }
+            db_change_history_label.Text = "Last updated :  " + item_name_textbox.Text;
             item_list_data = db.getAllItem();
             initialize();
             item_name_textbox.Text = "";
@@ -271,23 +278,33 @@ namespace Bill_management_system
 
         private void print_btn_click(object sender, EventArgs e)
         {
+            if (cust_tin_textbox.Text == "")
+            {
+                MessageBox.Show("Enter Customer Tin","Print Bill",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return;
+            }
             foreach(DataRow row in dt.Rows)
             {
                 int stock = Convert.ToInt32(row["Stock"]); ;
                 int qty = Convert.ToInt32(row["Qty"]);
                 if (stock < 0)
                 {
-                    MessageBox.Show("Not Enough Stock of " + row["Name"]);
+                    MessageBox.Show("Not Enough Stock of " + row["Name"], "Out of Stock", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 string id = getId((string)row["Name"]);
                 db.updateItemStock(id, stock);
             }
-            printer.header(tin, cust_tin_textbox.Text, date_picker.Value.ToShortDateString());
+            printer.initialize(invoice_textbox.Text+".doc");
+            printer.header(tin, cust_tin_textbox.Text, date_picker.Value.ToShortDateString(),invoice_textbox.Text);
             printer.content(dt);
-            printer.footer(10.10);
+            Decimal total = 0;
+            foreach (DataRow row in dt.Rows)
+            {
+                total += Convert.ToDecimal(row["Sub Total"]);
+            }
+            printer.footer(total);
             printer.print();
-            printer.initialize();
             dt.Clear();
             item_list_data = db.getAllItem();
             initialize();
@@ -313,6 +330,45 @@ namespace Bill_management_system
             config.Save();
             ConfigurationManager.RefreshSection("appSettings");
             initialize();
+            MessageBox.Show("Settings Saved!", "Database Settings", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void select_folder_btn_Click(object sender, EventArgs e)
+        {
+            bill_save_folder_browser.ShowDialog();
+            path_display_label.Text = bill_save_folder_browser.SelectedPath;
+        }
+
+        private void local_settings_save_btn_Click(object sender, EventArgs e)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            string path = bill_save_folder_browser.SelectedPath;
+            config.AppSettings.Settings["output"].Value = path+"/";
+            config.Save();
+            bill_save_folder_browser.SelectedPath = ConfigurationManager.AppSettings["output"];
+            printer.output_file_path = path + "\\";
+            MessageBox.Show("Settings Saved!","Local Settings", MessageBoxButtons.OK,MessageBoxIcon.Information);
+        }
+
+        private void db_backup_btn_Click(object sender, EventArgs e)
+        {
+            backup_folder_browser.ShowDialog();
+            string path = backup_folder_browser.SelectedPath;
+            string user = ConfigurationManager.AppSettings["user"];
+            string pass = ConfigurationManager.AppSettings["pass"];
+            string db = ConfigurationManager.AppSettings["db"];
+            string location = "\""+ConfigurationManager.AppSettings["sql"];
+            location += "\\mysqldump\" -u " + user + " -p"+pass + " " + db + " >\""+path
+                +"\\"+DateTime.Now.ToShortDateString()+".txt"+"\"";
+            Process p = new Process();
+            p.StartInfo.FileName = "cmd.exe";
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+            p.StandardInput.Write(location+"\n");
+            p.Close();
+            MessageBox.Show("Back up Successfull!", "Back up", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

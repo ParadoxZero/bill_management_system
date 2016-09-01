@@ -283,10 +283,11 @@ namespace Bill_management_system
                 string id = getId((string)row["Name"]);
                 db.updateItemStock(id, stock);
             }
-            printer.header(tin, cust_tin_textbox.Text, date_picker.Text);
+            printer.header(tin, cust_tin_textbox.Text, date_picker.Value.ToShortDateString());
             printer.content(dt);
             printer.footer(10.10);
             printer.print();
+            printer.initialize();
             dt.Clear();
             item_list_data = db.getAllItem();
             initialize();

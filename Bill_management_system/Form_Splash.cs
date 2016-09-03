@@ -48,12 +48,11 @@ namespace Bill_management_system
             adp.Fill(set);
             var main_form = new MainForm();
             main_form.db_connection = cn;
-            main_form.item_list_data = set;
             main_form.FormClosed += (s,args) => this.Close();
-            main_form.initialize();
             progressBar1.Value = 100;
             this.Hide();
             main_form.Show();
+            main_form.initialize();
         }
     }
 }

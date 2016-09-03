@@ -33,10 +33,12 @@ namespace Bill_management_system
             Output = new StreamWriter(filename_with_path, true);
         }
         // function header
-        public void  header(string yourTin , string customerTin , string date, string invoice)
+        public void  header(string yourTin , string customerTin , string date, string invoice, string name)
         {
+
             Output.WriteLine("                     Mariya Agencies " + "\n");
             Output.WriteLine("Invoice No: " + invoice);
+            Output.WriteLine("Customer name:" + name);
             string format = "{0,-25}{1,-25}{2,-12}";
             Output.WriteLine(string.Format(format, "Agency Tin:" + yourTin, "Customer Tin:" + customerTin, "Dt:" + date));
             Output.WriteLine(headertext);

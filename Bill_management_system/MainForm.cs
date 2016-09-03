@@ -47,6 +47,7 @@ namespace Bill_management_system
             string output = ConfigurationManager.AppSettings["output"];
             printer = new Printer(output);
         }
+        
         public void initializeDataItems()
         {
             data_items.Columns["Sno"].ReadOnly = true;
@@ -63,19 +64,28 @@ namespace Bill_management_system
             data_items.Columns["Stock"].FillWeight = 30;
             data_items.Columns["Tax"].FillWeight = 30;
             data_items.Columns["Qty"].FillWeight = 30;
+            
         }
         public void initialize()
         {
+            db = new DbHelper(db_connection);
+            item_list_data = db.getAllItem();
             item_box_combo.DataSource = bill_items_combo.DataSource = item_list_data.Tables[0];
             item_box_combo.ValueMember = bill_items_combo.ValueMember = "id";
             item_box_combo.DisplayMember = bill_items_combo.DisplayMember = "Name";
-            db = new DbHelper(db_connection);
             tax = Convert.ToDecimal(ConfigurationManager.AppSettings["tax"]);
             tin = ConfigurationManager.AppSettings["tin"];
             default_tax_textbox.Text = "" + tax;
             default_tin_textbox.Text = tin;
             invoice_textbox.Text = ("" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.Hour.ToString("00") + DateTime.Now.Minute.ToString("00") + DateTime.Now.Second.ToString("00"));
             sno = 1;
+            stock_datagrid.DataSource = db.getAllItem().Tables[0];
+            //=============================================================
+            stock_datagrid.Columns["id"].Visible = false;
+            stock_datagrid.Columns["Name"].FillWeight = 200;
+            stock_datagrid.Columns["Price"].FillWeight = 30;
+            stock_datagrid.Columns["Stock"].FillWeight = 30;
+            //=============================================================
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -100,6 +110,10 @@ namespace Bill_management_system
             }
             try {
                 qty = Convert.ToInt32(r["Qty"]);
+                if (qty == 0)
+                {
+                    dt.Rows.RemoveAt(row);
+                }
             }
             catch
             {
@@ -118,6 +132,7 @@ namespace Bill_management_system
         }
         private void sno_updater(object s, EventArgs e)
         {
+            item_list_data = db.getAllItem();
             int i = 1;
             foreach (DataRow item in dt.Rows)
             {
@@ -162,7 +177,6 @@ namespace Bill_management_system
                         return;
                     }
                     r["Stock"] = "" + st;
-                    row["Stock"] = r["Stock"];
                 }
             }
             foreach(DataRow row in dt.Rows)
@@ -171,7 +185,7 @@ namespace Bill_management_system
                 {
                     int qt = Convert.ToInt32(row["Qty"]);
                     qt += Convert.ToInt32(r["Qty"]);
-                    row["Stock"] = r["Stock"];
+                    row["Stock"] = Convert.ToInt32(row["Stock"])- Convert.ToInt32(r["Qty"]);
                     row["Qty"] = qt;
                     row["GrossPrice"] = Convert.ToDecimal(row["GrossPrice"]) + Convert.ToDecimal(r["GrossPrice"]);
                     row["Sub Total"] = Convert.ToDecimal(row["Sub Total"]) + Convert.ToDecimal(r["Sub Total"]);
@@ -188,7 +202,14 @@ namespace Bill_management_system
 
         private void select_Click(object sender, EventArgs e)
         {
-            int value = (int)bill_items_combo.SelectedValue;
+            int value;
+            try {
+                value = (int)bill_items_combo.SelectedValue;
+            }
+            catch
+            {
+                return;
+            }
             foreach(DataRow row in item_list_data.Tables[0].Rows)
             {
                 if (((int)row["id"]) == value)
@@ -278,9 +299,9 @@ namespace Bill_management_system
 
         private void print_btn_click(object sender, EventArgs e)
         {
-            if (cust_tin_textbox.Text == "")
+            if (cust_tin_textbox.Text == "" || customer_name.Text=="")
             {
-                MessageBox.Show("Enter Customer Tin","Print Bill",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Enter Customer Details","Print Bill",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return;
             }
             foreach(DataRow row in dt.Rows)
@@ -296,7 +317,8 @@ namespace Bill_management_system
                 db.updateItemStock(id, stock);
             }
             printer.initialize(invoice_textbox.Text+".doc");
-            printer.header(tin, cust_tin_textbox.Text, date_picker.Value.ToShortDateString(),invoice_textbox.Text);
+            printer.header(tin, cust_tin_textbox.Text, date_picker.Value.ToShortDateString(),
+                invoice_textbox.Text,customer_name.Text);
             printer.content(dt);
             Decimal total = 0;
             foreach (DataRow row in dt.Rows)
@@ -352,23 +374,26 @@ namespace Bill_management_system
 
         private void db_backup_btn_Click(object sender, EventArgs e)
         {
-            backup_folder_browser.ShowDialog();
-            string path = backup_folder_browser.SelectedPath;
-            string user = ConfigurationManager.AppSettings["user"];
-            string pass = ConfigurationManager.AppSettings["pass"];
-            string db = ConfigurationManager.AppSettings["db"];
-            string location = "\""+ConfigurationManager.AppSettings["sql"];
-            location += "\\mysqldump\" -u " + user + " -p"+pass + " " + db + " >\""+path
-                +"\\"+DateTime.Now.ToShortDateString()+".txt"+"\"";
-            Process p = new Process();
-            p.StartInfo.FileName = "cmd.exe";
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.Start();
-            p.StandardInput.Write(location+"\n");
-            p.Close();
-            MessageBox.Show("Back up Successfull!", "Back up", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            DialogResult d = backup_folder_browser.ShowDialog();
+            if (d.ToString() == "OK")
+            {
+                string path = backup_folder_browser.SelectedPath;
+                string user = ConfigurationManager.AppSettings["user"];
+                string pass = ConfigurationManager.AppSettings["pass"];
+                string db = ConfigurationManager.AppSettings["db"];
+                string location = "\"" + ConfigurationManager.AppSettings["sql"];
+                location += "\\mysqldump\" -u " + user + " -p" + pass + " " + db + " >\"" + path
+                    + "\\" + DateTime.Now.ToShortDateString() + ".txt" + "\"";
+                Process p = new Process();
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.RedirectStandardInput = true;
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.Start();
+                p.StandardInput.Write(location + "\n");
+                p.Close();
+                MessageBox.Show("Back up Successfull!", "Back up", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

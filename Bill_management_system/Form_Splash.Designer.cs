@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Splash));
             this.label1 = new System.Windows.Forms.Label();
             this.Splash_timer = new System.Windows.Forms.Timer(this.components);
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
@@ -37,11 +38,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(73, 97);
+            this.label1.Location = new System.Drawing.Point(503, 336);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(137, 17);
+            this.label1.Size = new System.Drawing.Size(130, 17);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Open Heart Solution";
+            this.label1.Text = "© 2016 Shift2Cloud";
             // 
             // Splash_timer
             // 
@@ -53,14 +54,16 @@
             // 
             this.progressBar1.Location = new System.Drawing.Point(13, 365);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(601, 23);
+            this.progressBar1.Size = new System.Drawing.Size(742, 23);
             this.progressBar1.TabIndex = 1;
             // 
             // Splash
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(626, 400);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(767, 415);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

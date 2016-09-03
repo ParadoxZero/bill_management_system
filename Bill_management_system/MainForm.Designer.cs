@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tab_view = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
+            this.customer_name = new System.Windows.Forms.TextBox();
             this.print_btn = new System.Windows.Forms.Button();
             this.invoice_textbox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -69,11 +72,12 @@
             this.db_backup_btn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.save_config_btn = new System.Windows.Forms.Button();
-            this.exit = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.bill_save_folder_browser = new System.Windows.Forms.FolderBrowserDialog();
             this.backup_folder_browser = new System.Windows.Forms.FolderBrowserDialog();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.stock_datagrid = new System.Windows.Forms.DataGridView();
             this.tab_view.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.data_items)).BeginInit();
@@ -82,7 +86,9 @@
             this.tabPage3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.stock_datagrid)).BeginInit();
             this.SuspendLayout();
             // 
             // tab_view
@@ -91,18 +97,22 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tab_view.Controls.Add(this.tabPage1);
+            this.tab_view.Controls.Add(this.tabPage5);
             this.tab_view.Controls.Add(this.tabPage2);
             this.tab_view.Controls.Add(this.tabPage3);
-            this.tab_view.Location = new System.Drawing.Point(0, 45);
+            this.tab_view.Controls.Add(this.tabPage4);
+            this.tab_view.Location = new System.Drawing.Point(0, 3);
             this.tab_view.Margin = new System.Windows.Forms.Padding(0);
             this.tab_view.Name = "tab_view";
             this.tab_view.Padding = new System.Drawing.Point(10, 10);
             this.tab_view.SelectedIndex = 0;
-            this.tab_view.Size = new System.Drawing.Size(1488, 503);
+            this.tab_view.Size = new System.Drawing.Size(1348, 718);
             this.tab_view.TabIndex = 0;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label13);
+            this.tabPage1.Controls.Add(this.customer_name);
             this.tabPage1.Controls.Add(this.print_btn);
             this.tabPage1.Controls.Add(this.invoice_textbox);
             this.tabPage1.Controls.Add(this.label8);
@@ -118,14 +128,30 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 39);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1480, 460);
+            this.tabPage1.Size = new System.Drawing.Size(1340, 675);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Create Bill";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(573, 48);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(107, 17);
+            this.label13.TabIndex = 13;
+            this.label13.Text = "Customer name";
+            // 
+            // customer_name
+            // 
+            this.customer_name.Location = new System.Drawing.Point(687, 48);
+            this.customer_name.Name = "customer_name";
+            this.customer_name.Size = new System.Drawing.Size(405, 22);
+            this.customer_name.TabIndex = 12;
+            // 
             // print_btn
             // 
-            this.print_btn.Location = new System.Drawing.Point(1292, 5);
+            this.print_btn.Location = new System.Drawing.Point(1157, 41);
             this.print_btn.Name = "print_btn";
             this.print_btn.Size = new System.Drawing.Size(75, 36);
             this.print_btn.TabIndex = 11;
@@ -181,10 +207,10 @@
             this.data_items.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.data_items.BackgroundColor = System.Drawing.Color.White;
             this.data_items.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.data_items.Location = new System.Drawing.Point(7, 47);
+            this.data_items.Location = new System.Drawing.Point(7, 88);
             this.data_items.Name = "data_items";
             this.data_items.RowTemplate.Height = 24;
-            this.data_items.Size = new System.Drawing.Size(1465, 405);
+            this.data_items.Size = new System.Drawing.Size(1325, 579);
             this.data_items.TabIndex = 5;
             // 
             // label2
@@ -240,7 +266,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 39);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1480, 460);
+            this.tabPage2.Size = new System.Drawing.Size(1340, 675);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Edit Database";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -382,7 +408,7 @@
             this.tabPage3.Controls.Add(this.groupBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 39);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1480, 460);
+            this.tabPage3.Size = new System.Drawing.Size(1340, 675);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Settings";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -504,55 +530,64 @@
             this.save_config_btn.UseVisualStyleBackColor = true;
             this.save_config_btn.Click += new System.EventHandler(this.save_config_btn_Click);
             // 
-            // exit
+            // tabPage4
             // 
-            this.exit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.exit.BackColor = System.Drawing.Color.IndianRed;
-            this.exit.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.exit.FlatAppearance.BorderSize = 0;
-            this.exit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exit.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.exit.Location = new System.Drawing.Point(1438, 0);
-            this.exit.Margin = new System.Windows.Forms.Padding(0);
-            this.exit.Name = "exit";
-            this.exit.Size = new System.Drawing.Size(50, 45);
-            this.exit.TabIndex = 2;
-            this.exit.Text = "X";
-            this.exit.UseVisualStyleBackColor = false;
-            this.exit.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.DodgerBlue;
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.exit);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1488, 45);
-            this.panel1.TabIndex = 3;
+            this.tabPage4.Controls.Add(this.label3);
+            this.tabPage4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabPage4.Location = new System.Drawing.Point(4, 39);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(1340, 675);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "About";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 14);
+            this.label3.Font = new System.Drawing.Font("Bookman Old Style", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(33, 37);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(112, 17);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Mariya Agencies";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label3.Size = new System.Drawing.Size(442, 231);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Bill Management System\r\nVersion 0.1.3.4\r\nShift2Cloud Software Solutions\r\n\r\ncopyri" +
+    "ght © 2016 Shift2Cloud\r\n\r\nAll rights reserved\r\n";
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.stock_datagrid);
+            this.tabPage5.Location = new System.Drawing.Point(4, 39);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(1340, 675);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Stock";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // stock_datagrid
+            // 
+            this.stock_datagrid.AllowUserToAddRows = false;
+            this.stock_datagrid.AllowUserToDeleteRows = false;
+            this.stock_datagrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.stock_datagrid.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.stock_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.stock_datagrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stock_datagrid.Location = new System.Drawing.Point(0, 0);
+            this.stock_datagrid.Name = "stock_datagrid";
+            this.stock_datagrid.ReadOnly = true;
+            this.stock_datagrid.RowTemplate.Height = 24;
+            this.stock_datagrid.Size = new System.Drawing.Size(1340, 675);
+            this.stock_datagrid.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1488, 548);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(1348, 721);
             this.Controls.Add(this.tab_view);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "MainForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Mariya Agencies";
             this.tab_view.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -566,8 +601,10 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.stock_datagrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -577,14 +614,11 @@
         private System.Windows.Forms.TabControl tab_view;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Button exit;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button select_bill_item;
         private System.Windows.Forms.TextBox qty_textbox;
         private System.Windows.Forms.ComboBox bill_items_combo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView data_items;
         private System.Windows.Forms.Button update_db;
         private System.Windows.Forms.TextBox item_price_textbox;
@@ -620,5 +654,11 @@
         private System.Windows.Forms.Label path_display_label;
         private System.Windows.Forms.Label db_change_history_label;
         private System.Windows.Forms.FolderBrowserDialog backup_folder_browser;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox customer_name;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.DataGridView stock_datagrid;
     }
 }

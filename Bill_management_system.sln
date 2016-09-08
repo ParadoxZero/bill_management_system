@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bill_management_system", "Bill_management_system\Bill_management_system.csproj", "{F7103BA6-EA1E-4E88-B362-52E43F0FAC37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bill 'n Stock", "Bill_management_system\Bill 'n Stock.csproj", "{F7103BA6-EA1E-4E88-B362-52E43F0FAC37}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "setup", "setup\setup.vdproj", "{CE45FA33-9E55-45F7-81CE-ADEA7307EC82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,9 @@ Global
 		{F7103BA6-EA1E-4E88-B362-52E43F0FAC37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7103BA6-EA1E-4E88-B362-52E43F0FAC37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7103BA6-EA1E-4E88-B362-52E43F0FAC37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE45FA33-9E55-45F7-81CE-ADEA7307EC82}.Debug|Any CPU.ActiveCfg = Debug
+		{CE45FA33-9E55-45F7-81CE-ADEA7307EC82}.Release|Any CPU.ActiveCfg = Release
+		{CE45FA33-9E55-45F7-81CE-ADEA7307EC82}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -27,16 +27,25 @@ namespace Bill_management_system
             headertext = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "/Header.txt");
             footertext = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "/Footer.txt");;
         }
-        public void initialize(string path_filename)
+        public void initialize(string path_filename,MainForm form)
         {
             filename_with_path = output_file_path + path_filename;
-            Output = new StreamWriter(filename_with_path, true);
+            try {
+                Output = new StreamWriter(filename_with_path, true);
+            }
+            catch
+            {
+                form.select_folder_btn_Click(null,null);
+                form.local_settings_save_btn_Click(null, null);
+                initialize(path_filename,form);
+            }
         }
         // function header
         public void  header(string yourTin , string customerTin , string date, string invoice, string name)
         {
 
-            Output.WriteLine("                     Mariya Agencies " + "\n");
+            Output.WriteLine("                            Mariya Agencies" + "\n");
+            Output.WriteLine("                                Form 8\n\n");
             Output.WriteLine("Invoice No: " + invoice);
             Output.WriteLine("Customer name:" + name);
             string format = "{0,-25}{1,-25}{2,-12}";

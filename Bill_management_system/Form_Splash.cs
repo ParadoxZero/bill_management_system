@@ -15,6 +15,7 @@ namespace Bill_management_system
 {
     public partial class Splash : Form
     {
+        public MainForm main_form;
         private string user, pass, db_name;
         public Splash()
         {
@@ -46,7 +47,7 @@ namespace Bill_management_system
             MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
             DataSet set = new DataSet();
             adp.Fill(set);
-            var main_form = new MainForm();
+            main_form = new MainForm();
             main_form.db_connection = cn;
             main_form.FormClosed += (s,args) => this.Close();
             progressBar1.Value = 100;

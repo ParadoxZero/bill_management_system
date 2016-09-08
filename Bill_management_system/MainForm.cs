@@ -229,9 +229,18 @@ namespace Bill_management_system
                 MessageBox.Show("Input values!","Update Database",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return;
             }
-            Decimal price = Convert.ToDecimal(item_price_textbox.Text);
+            Decimal price ;
             string id = null;
-            int stock = Convert.ToInt32(stock_textbox.Text);
+            int stock ;
+            try
+            {
+                price = Convert.ToDecimal(item_price_textbox.Text);
+                stock = Convert.ToInt32(stock_textbox.Text);
+            }
+            catch
+            {
+                return;
+            }
             string name = item_name_textbox.Text, pr = "" + price;
             foreach(DataRow row in item_list_data.Tables[0].Rows)
             {
@@ -316,7 +325,7 @@ namespace Bill_management_system
                 string id = getId((string)row["Name"]);
                 db.updateItemStock(id, stock);
             }
-            printer.initialize(invoice_textbox.Text+".doc");
+            printer.initialize(invoice_textbox.Text+".txt",this);
             printer.header(tin, cust_tin_textbox.Text, date_picker.Value.ToShortDateString(),
                 invoice_textbox.Text,customer_name.Text);
             printer.content(dt);
@@ -355,13 +364,13 @@ namespace Bill_management_system
             MessageBox.Show("Settings Saved!", "Database Settings", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void select_folder_btn_Click(object sender, EventArgs e)
+        public void select_folder_btn_Click(object sender, EventArgs e)
         {
             bill_save_folder_browser.ShowDialog();
             path_display_label.Text = bill_save_folder_browser.SelectedPath;
         }
 
-        private void local_settings_save_btn_Click(object sender, EventArgs e)
+        public void local_settings_save_btn_Click(object sender, EventArgs e)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             string path = bill_save_folder_browser.SelectedPath;
@@ -383,7 +392,7 @@ namespace Bill_management_system
                 string db = ConfigurationManager.AppSettings["db"];
                 string location = "\"" + ConfigurationManager.AppSettings["sql"];
                 location += "\\mysqldump\" -u " + user + " -p" + pass + " " + db + " >\"" + path
-                    + "\\" + DateTime.Now.ToShortDateString() + ".txt" + "\"";
+                    + "\\" + DateTime.Now.ToShortDateString() + ".sql" + "\"";
                 Process p = new Process();
                 p.StartInfo.FileName = "cmd.exe";
                 p.StartInfo.RedirectStandardInput = true;

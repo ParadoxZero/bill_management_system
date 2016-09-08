@@ -45,6 +45,8 @@
             this.select_bill_item = new System.Windows.Forms.Button();
             this.qty_textbox = new System.Windows.Forms.TextBox();
             this.bill_items_combo = new System.Windows.Forms.ComboBox();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.stock_datagrid = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.db_change_history_label = new System.Windows.Forms.Label();
@@ -76,19 +78,17 @@
             this.label3 = new System.Windows.Forms.Label();
             this.bill_save_folder_browser = new System.Windows.Forms.FolderBrowserDialog();
             this.backup_folder_browser = new System.Windows.Forms.FolderBrowserDialog();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.stock_datagrid = new System.Windows.Forms.DataGridView();
             this.tab_view.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.data_items)).BeginInit();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.stock_datagrid)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.tabPage5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.stock_datagrid)).BeginInit();
             this.SuspendLayout();
             // 
             // tab_view
@@ -259,6 +259,31 @@
             this.bill_items_combo.Name = "bill_items_combo";
             this.bill_items_combo.Size = new System.Drawing.Size(284, 24);
             this.bill_items_combo.TabIndex = 0;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.stock_datagrid);
+            this.tabPage5.Location = new System.Drawing.Point(4, 39);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(1340, 675);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Stock";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // stock_datagrid
+            // 
+            this.stock_datagrid.AllowUserToAddRows = false;
+            this.stock_datagrid.AllowUserToDeleteRows = false;
+            this.stock_datagrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.stock_datagrid.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.stock_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.stock_datagrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stock_datagrid.Location = new System.Drawing.Point(0, 0);
+            this.stock_datagrid.Name = "stock_datagrid";
+            this.stock_datagrid.ReadOnly = true;
+            this.stock_datagrid.RowTemplate.Height = 24;
+            this.stock_datagrid.Size = new System.Drawing.Size(1340, 675);
+            this.stock_datagrid.TabIndex = 0;
             // 
             // tabPage2
             // 
@@ -549,33 +574,8 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(442, 231);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Bill Management System\r\nVersion 0.1.3.4\r\nShift2Cloud Software Solutions\r\n\r\ncopyri" +
-    "ght © 2016 Shift2Cloud\r\n\r\nAll rights reserved\r\n";
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(this.stock_datagrid);
-            this.tabPage5.Location = new System.Drawing.Point(4, 39);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1340, 675);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Stock";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // stock_datagrid
-            // 
-            this.stock_datagrid.AllowUserToAddRows = false;
-            this.stock_datagrid.AllowUserToDeleteRows = false;
-            this.stock_datagrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.stock_datagrid.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.stock_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.stock_datagrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stock_datagrid.Location = new System.Drawing.Point(0, 0);
-            this.stock_datagrid.Name = "stock_datagrid";
-            this.stock_datagrid.ReadOnly = true;
-            this.stock_datagrid.RowTemplate.Height = 24;
-            this.stock_datagrid.Size = new System.Drawing.Size(1340, 675);
-            this.stock_datagrid.TabIndex = 0;
+            this.label3.Text = "Bill \'n Stock\r\nVersion 1.0.0.0\r\nShift2Cloud Software Solutions\r\n\r\ncopyright © 201" +
+    "6 Shift2Cloud\r\n\r\nAll rights reserved\r\n";
             // 
             // MainForm
             // 
@@ -592,6 +592,8 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.data_items)).EndInit();
+            this.tabPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.stock_datagrid)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -603,8 +605,6 @@
             this.groupBox1.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.tabPage5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.stock_datagrid)).EndInit();
             this.ResumeLayout(false);
 
         }

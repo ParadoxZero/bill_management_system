@@ -11,6 +11,7 @@ using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
 
 namespace Bill_management_system
 {
@@ -26,6 +27,7 @@ namespace Bill_management_system
         private DbHelper db;
         private Decimal tax;
         private string tin;
+        Decimal total = 0;
         public MainForm()
         {
             InitializeComponent();
@@ -46,8 +48,18 @@ namespace Bill_management_system
             string footer = ConfigurationManager.AppSettings["footer"];
             string output = ConfigurationManager.AppSettings["output"];
             printer = new Printer(output);
+            backgroundWorker1.RunWorkerCompleted += (object sender, RunWorkerCompletedEventArgs e) => {
+                progressBar1.Visible = false;
+                print_btn.Enabled = Enabled;
+                dt.Clear();
+                item_list_data = db.getAllItem();
+                initialize();
+                MessageBox.Show("File has been sent to printer", "Sucess",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
+            };
         }
-        
+
         public void initializeDataItems()
         {
             data_items.Columns["Sno"].ReadOnly = true;
@@ -64,7 +76,7 @@ namespace Bill_management_system
             data_items.Columns["Stock"].FillWeight = 30;
             data_items.Columns["Tax"].FillWeight = 30;
             data_items.Columns["Qty"].FillWeight = 30;
-            
+
         }
         public void initialize()
         {
@@ -77,8 +89,9 @@ namespace Bill_management_system
             tin = ConfigurationManager.AppSettings["tin"];
             default_tax_textbox.Text = "" + tax;
             default_tin_textbox.Text = tin;
-            invoice_textbox.Text = ("" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + DateTime.Now.ToString("dd") + DateTime.Now.Hour.ToString("00") + DateTime.Now.Minute.ToString("00") + DateTime.Now.Second.ToString("00"));
-            sno = 1;
+            tax_tb.Text = tax + "";
+            invoice_textbox.Text = ConfigurationManager.AppSettings["invoice_no"];
+            sno_updater(null,null);
             stock_datagrid.DataSource = db.getAllItem().Tables[0];
             //=============================================================
             stock_datagrid.Columns["id"].Visible = false;
@@ -100,15 +113,16 @@ namespace Bill_management_system
             DataRow r = dt.Rows[row];
             Decimal price = Convert.ToDecimal(r["Price"]);
             Decimal tax = Convert.ToDecimal(r["Tax"]);
-            int qty, stock=0;
-            foreach(DataRow rw in item_list_data.Tables[0].Rows)
+            int qty, stock = 0;
+            foreach (DataRow rw in item_list_data.Tables[0].Rows)
             {
                 if (rw["Name"] == r["Name"])
                 {
                     stock = Convert.ToInt32(rw["Stock"]);
                 }
             }
-            try {
+            try
+            {
                 qty = Convert.ToInt32(r["Qty"]);
                 if (qty == 0)
                 {
@@ -128,7 +142,7 @@ namespace Bill_management_system
             }
             r["Stock"] = "" + stock;
             r["GrossPrice"] = price * qty;
-            r["Sub Total"] = price * qty * (1 + tax/100);
+            r["Sub Total"] = price * qty * (1 + tax / 100);
         }
         private void sno_updater(object s, EventArgs e)
         {
@@ -161,7 +175,7 @@ namespace Bill_management_system
                 if (((int)row["id"]) == value)
                 {
                     base_row = row;
-                    Decimal price =Convert.ToDecimal( row["Price"]);
+                    Decimal price = Convert.ToDecimal(row["Price"]);
                     // Sno is added later after verifying the row is unique.
                     r["Name"] = row["Name"];
                     r["Qty"] = qty;
@@ -169,7 +183,7 @@ namespace Bill_management_system
                     r["Tax"] = tax;
                     r["Stock"] = row["Stock"];
                     r["GrossPrice"] = price * qty;
-                    r["Sub Total"] = price*qty*(1+ (Decimal)0.145);
+                    r["Sub Total"] = price * qty * (1 + (Decimal)0.145);
                     int st = Convert.ToInt32(row["Stock"]) - qty;
                     if (st < 0)
                     {
@@ -179,20 +193,20 @@ namespace Bill_management_system
                     r["Stock"] = "" + st;
                 }
             }
-            foreach(DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
             {
                 if (row["Name"].Equals(r["Name"]))
                 {
                     int qt = Convert.ToInt32(row["Qty"]);
                     qt += Convert.ToInt32(r["Qty"]);
-                    row["Stock"] = Convert.ToInt32(row["Stock"])- Convert.ToInt32(r["Qty"]);
+                    row["Stock"] = Convert.ToInt32(row["Stock"]) - Convert.ToInt32(r["Qty"]);
                     row["Qty"] = qt;
                     row["GrossPrice"] = Convert.ToDecimal(row["GrossPrice"]) + Convert.ToDecimal(r["GrossPrice"]);
                     row["Sub Total"] = Convert.ToDecimal(row["Sub Total"]) + Convert.ToDecimal(r["Sub Total"]);
                     return;
                 }
             }
-            
+
             r["Sno"] = sno++; // Don't move this to above
             // this is here to make sure Sno increases only if item new
             dt.Rows.Add(r);
@@ -203,14 +217,15 @@ namespace Bill_management_system
         private void select_Click(object sender, EventArgs e)
         {
             int value;
-            try {
+            try
+            {
                 value = (int)bill_items_combo.SelectedValue;
             }
             catch
             {
                 return;
             }
-            foreach(DataRow row in item_list_data.Tables[0].Rows)
+            foreach (DataRow row in item_list_data.Tables[0].Rows)
             {
                 if (((int)row["id"]) == value)
                 {
@@ -218,23 +233,28 @@ namespace Bill_management_system
                     item_price_textbox.Text = row["Price"].ToString();
                     stock_textbox.Text = row["Stock"].ToString();
                     updateFlag = true;
+                    update_db.Text = "Update";
+                    reset_update_btn.Visible = true;
+                    delete_btn.Visible = true;
                 }
             }
         }
 
         private void update_db_Click(object sender, EventArgs e)
         {
-            if(item_name_textbox.Text=="" || item_price_textbox.Text == "" || stock_textbox.Text=="")
+            if (item_name_textbox.Text == "" || item_price_textbox.Text == "" || stock_textbox.Text == "")
             {
-                MessageBox.Show("Input values!","Update Database",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Input values!", "Update Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            Decimal price ;
+            Decimal price;
             string id = null;
-            int stock ;
+            int stock;
             try
             {
                 price = Convert.ToDecimal(item_price_textbox.Text);
+                Decimal tax = Convert.ToDecimal(tax_tb.Text);
+                price = price / (1 + tax / 100);
                 stock = Convert.ToInt32(stock_textbox.Text);
             }
             catch
@@ -242,9 +262,9 @@ namespace Bill_management_system
                 return;
             }
             string name = item_name_textbox.Text, pr = "" + price;
-            foreach(DataRow row in item_list_data.Tables[0].Rows)
+            foreach (DataRow row in item_list_data.Tables[0].Rows)
             {
-                if(name.Equals((string)row["Name"]))
+                if (name.Equals((string)row["Name"]))
                 {
                     id = row["id"].ToString();
                 }
@@ -256,20 +276,19 @@ namespace Bill_management_system
                 updateFlag = false;
             }
             else {
-                try {
+                try
+                {
                     db.insertItem(item_name_textbox.Text, price, stock);
                 }
-                catch(MySqlException err)
+                catch (MySqlException err)
                 {
-                    MessageBox.Show("Error adding new item :" + err.Message,"Fatal Error",MessageBoxButtons.OK,MessageBoxIcon.Stop);
+                    MessageBox.Show("Error adding new item :" + err.Message, "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
             }
             db_change_history_label.Text = "Last updated :  " + item_name_textbox.Text;
             item_list_data = db.getAllItem();
             initialize();
-            item_name_textbox.Text = "";
-            item_price_textbox.Text = "";
-            stock_textbox.Text = "";
+            reset();
         }
 
         private void delete_btn_click(object sender, EventArgs e)
@@ -279,7 +298,7 @@ namespace Bill_management_system
             Decimal price;
             try
             {
-                 price = Convert.ToDecimal(item_price_textbox.Text);
+                price = Convert.ToDecimal(item_price_textbox.Text);
             }
             catch
             {
@@ -301,19 +320,17 @@ namespace Bill_management_system
                 item_list_data = db.getAllItem();
                 initialize();
             }
-            item_name_textbox.Text = "";
-            item_price_textbox.Text = "";
-            stock_textbox.Text = "";
+            reset();
         }
 
         private void print_btn_click(object sender, EventArgs e)
         {
-            if (cust_tin_textbox.Text == "" || customer_name.Text=="")
+            if (cust_tin_textbox.Text == "" || customer_name.Text == "")
             {
-                MessageBox.Show("Enter Customer Details","Print Bill",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Enter Customer Details", "Print Bill", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            foreach(DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
             {
                 int stock = Convert.ToInt32(row["Stock"]); ;
                 int qty = Convert.ToInt32(row["Qty"]);
@@ -325,25 +342,27 @@ namespace Bill_management_system
                 string id = getId((string)row["Name"]);
                 db.updateItemStock(id, stock);
             }
-            printer.initialize(invoice_textbox.Text+".txt",this);
-            printer.header(tin, cust_tin_textbox.Text, date_picker.Value.ToShortDateString(),
-                invoice_textbox.Text,customer_name.Text);
-            printer.content(dt);
-            Decimal total = 0;
+            //printer.initialize(invoice_textbox.Text+".txt",this);
+            //printer.header(tin, cust_tin_textbox.Text, date_picker.Value.ToShortDateString(),
+            //    invoice_textbox.Text,customer_name.Text);
+            //printer.content(dt);
             foreach (DataRow row in dt.Rows)
             {
                 total += Convert.ToDecimal(row["Sub Total"]);
             }
-            printer.footer(total);
-            printer.print();
-            dt.Clear();
-            item_list_data = db.getAllItem();
-            initialize();
+            print_btn.Enabled = false;
+            progressBar1.Visible = true;
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            string value = (Convert.ToInt32(invoice_textbox.Text.ToString())+1).ToString("D6");
+            config.AppSettings.Settings["invoice_no"].Value = value;
+            config.Save();
+            ConfigurationManager.RefreshSection(config.AppSettings.SectionInformation.Name);
+            backgroundWorker1.RunWorkerAsync();
         }
 
         private string getId(string name)
         {
-            foreach(DataRow row in item_list_data.Tables[0].Rows)
+            foreach (DataRow row in item_list_data.Tables[0].Rows)
             {
                 if (name.Equals(row["Name"]))
                     return row["id"].ToString();
@@ -374,11 +393,12 @@ namespace Bill_management_system
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             string path = bill_save_folder_browser.SelectedPath;
-            config.AppSettings.Settings["output"].Value = path+"/";
+            config.AppSettings.Settings["output"].Value = path + "/";
             config.Save();
+            ConfigurationManager.RefreshSection(config.AppSettings.SectionInformation.Name);
             bill_save_folder_browser.SelectedPath = ConfigurationManager.AppSettings["output"];
             printer.output_file_path = path + "\\";
-            MessageBox.Show("Settings Saved!","Local Settings", MessageBoxButtons.OK,MessageBoxIcon.Information);
+            MessageBox.Show("Settings Saved!", "Local Settings", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void db_backup_btn_Click(object sender, EventArgs e)
@@ -403,6 +423,30 @@ namespace Bill_management_system
                 p.Close();
                 MessageBox.Show("Back up Successfull!", "Back up", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            printer.doc_creation(invoice_textbox.Text, tin,
+                  cust_tin_textbox.Text, customer_name.Text,
+                  date_picker.Value.ToShortDateString().ToString(), dt,
+                  Convert.ToDouble(total), invoice_textbox.Text);            
+        }
+
+        private void reset_update_btn_Click(object sender, EventArgs e)
+        {
+            reset();
+            
+        }
+        private void reset()
+        {
+            updateFlag = false;
+            item_name_textbox.Text = "";
+            item_price_textbox.Text = "";
+            stock_textbox.Text = "";
+            update_db.Text = "Add";
+            reset_update_btn.Visible = false;
+            delete_btn.Visible = false;
         }
     }
 }
